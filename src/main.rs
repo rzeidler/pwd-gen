@@ -26,7 +26,7 @@ struct Cli {
     #[arg(
         short,
         long,
-        default_value = "-",
+        default_value_t = '-',
         help = "Block separator (must be a single character)"
     )]
     separator: char,
