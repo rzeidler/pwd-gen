@@ -1,17 +1,21 @@
-
-use rand::{distributions::Alphanumeric, prelude::*};
+use rand::Rng;
+use rand::rngs::OsRng;
+use rand::distributions::Slice;
 
 pub fn gen_pwd(entropy: u32, block_size: usize, block_sep: char) -> String {
-    let len_alphabet: usize = 62;
+    let alphabet: Vec<char> = ('a'..='z').chain('0'..='9').collect();
+    let len_alphabet = alphabet.len();
+    // println!("{}", String::from_iter(&alphabet));
+    assert!(len_alphabet > 0, "Alphabet must be non-empty.");
 
+    let alphabet_dist = Slice::new(&alphabet).unwrap();
+
+    // Calculate number of blocks needed to achieve desired entropy.
     let bits_per_block = (block_size as f64) * (len_alphabet as f64).log2();
     let n_blocks = (entropy as f64 / bits_per_block).ceil() as usize;
 
-    let mut rng = thread_rng();
-    let blocks: Vec<String> = (0..n_blocks).map(|_| {
-        (0..block_size)
-            .map(|_| rng.sample(Alphanumeric) as char)
-            .collect()
-    }).collect();
+    let blocks: Vec<String> = (0..n_blocks)
+        .map(|_| OsRng.sample_iter(&alphabet_dist).take(block_size).collect())
+        .collect();
     blocks.join(&block_sep.to_string())
 }
