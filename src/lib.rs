@@ -11,6 +11,7 @@ pub fn gen_pwd(entropy: u32, block_size: usize, block_sep: char) -> String {
     let alphabet_dist = Slice::new(&alphabet).unwrap();
 
     // Calculate number of blocks needed to achieve desired entropy.
+    // TODO: Need to handle block_size = 0 with an error.
     let bits_per_block = (block_size as f64) * (len_alphabet as f64).log2();
     let n_blocks = (entropy as f64 / bits_per_block).ceil() as usize;
 
