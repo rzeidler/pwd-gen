@@ -1,6 +1,6 @@
-use rand::Rng;
-use rand::rngs::OsRng;
 use rand::distributions::Slice;
+use rand::rngs::OsRng;
+use rand::Rng;
 
 pub fn gen_pwd(entropy: u32, block_size: usize, block_sep: char) -> String {
     let alphabet: Vec<char> = ('a'..='z').chain('0'..='9').collect();
