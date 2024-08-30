@@ -10,7 +10,7 @@ pub fn gen_pwd(entropy: NonZeroU32, block_size: NonZeroUsize, block_sep: char) -
 
     // Calculate number of blocks needed to achieve desired entropy.
     let bits_per_block = (block_size.get() as f64) * (len_alphabet as f64).log2();
-    let n_blocks = (entropy.get() as f64 / bits_per_block).ceil() as usize;
+    let n_blocks = ((entropy.get() as f64 / bits_per_block).ceil() as usize).max(1);
 
     // Generate password blocks
     let blocks: Vec<String> = (0..n_blocks)
