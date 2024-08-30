@@ -1,5 +1,6 @@
 use clap::Parser;
 use pwd_gen;
+use std::num::{NonZeroUsize,NonZeroU32};
 
 #[derive(Parser)]
 #[command(name = "Password Generator")]
@@ -32,8 +33,13 @@ struct Cli {
     separator: char,
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse();
-    let password = pwd_gen::gen_pwd(cli.entropy, cli.block_size as usize, cli.separator);
+    let entropy = NonZeroU32::try_from(cli.entropy)?;
+    let block_size = NonZeroUsize::try_from(cli.block_size as usize)?;
+    
+    let password = pwd_gen::gen_pwd(entropy, block_size, cli.separator);
     println!("{}", password);
+    
+    Ok(())
 }
