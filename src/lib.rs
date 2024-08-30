@@ -6,7 +6,7 @@
 use rand::distributions::Slice;
 use rand::rngs::OsRng;
 use rand::Rng;
-use std::num::{NonZeroUsize,NonZeroU32};
+use std::num::{NonZeroU32, NonZeroUsize};
 
 /// Generates a password with specified entropy, block size, and block separator.
 ///
@@ -31,7 +31,12 @@ pub fn gen_pwd(entropy: NonZeroU32, block_size: NonZeroUsize, block_sep: char) -
 
     // Generate password blocks
     let blocks: Vec<String> = (0..n_blocks)
-        .map(|_| OsRng.sample_iter(&alphabet_dist).take(block_size.get()).collect())
+        .map(|_| {
+            OsRng
+                .sample_iter(&alphabet_dist)
+                .take(block_size.get())
+                .collect()
+        })
         .collect();
 
     // Join the blocks and return password

@@ -4,7 +4,7 @@
 
 use clap::Parser;
 use pwd_gen;
-use std::num::{NonZeroUsize,NonZeroU32};
+use std::num::{NonZeroU32, NonZeroUsize};
 
 /// CLI arguments for the password generator
 #[derive(Parser)]
